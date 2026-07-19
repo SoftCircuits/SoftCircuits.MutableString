@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="SoftCircuits.MutableString.Tests/SoftCircuits.MutableString.Tests.csproj" />
+  <Project Path="SoftCircuits.MutableString/SoftCircuits.MutableString.csproj" />
+</Solution>

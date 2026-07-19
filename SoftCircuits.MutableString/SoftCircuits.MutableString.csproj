@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0; net9.0; net8.0; net7.0; net6.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>SoftCircuits.MutableString</Title>
+    <Version>1.0.0</Version>
+    <Company>SoftCircuits</Company>
+    <Authors>Jonathan Wood</Authors>
+    <Description>Lightweight editable string class.</Description>
+    <Copyright>Copyright © 2026 SoftCircuits</Copyright>
+  </PropertyGroup>
+
+</Project>
