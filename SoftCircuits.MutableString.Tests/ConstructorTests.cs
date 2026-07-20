@@ -168,7 +168,7 @@ public class ConstructorTests
     [Fact]
     public void SpanConstructor_EmptySpanProducesEmpty()
     {
-        MutableString ms = new([]);
+        MutableString ms = new(ReadOnlySpan<char>.Empty);
         Assert.Equal("", ms.ToString());
     }
 

@@ -2,6 +2,22 @@
 
 public sealed partial class MutableString
 {
+
+    public void CopyTo(char[] destination, int index, int count)
+    {
+        //if (count > this.length)
+        //{
+        //    ThrowHelper.ThrowArgumentOutOfRangeException(nameof(count), "Number of copying characters is greater than the string length.");
+        //}
+
+        Array.Copy(Buffer, 0, destination, index, count);
+    }
+
+    public void CopyTo(Span<char> destination)
+    {
+        AsSpan().CopyTo(destination);
+    }
+
     /// <summary>
     /// Gets or sets the character at the specified index.
     /// </summary>

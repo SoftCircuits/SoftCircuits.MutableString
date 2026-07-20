@@ -81,7 +81,7 @@ public class AppendTests
     public void Append_EmptyCharArray_IsNoOp()
     {
         MutableString ms = new("hello");
-        ms.Append([]);
+        ms.Append(Array.Empty<char>());
         Assert.Equal("hello", ms.ToString());
     }
 
@@ -99,7 +99,7 @@ public class AppendTests
     public void Append_EmptySpan_IsNoOp()
     {
         MutableString ms = new("hello");
-        ms.Append([]);
+        ms.Append(ReadOnlySpan<char>.Empty);
         Assert.Equal("hello", ms.ToString());
     }
 

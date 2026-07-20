@@ -273,20 +273,6 @@ public sealed partial class MutableString
     /// <param name="targetIndex">The starting index where the span should be copied.</param>
     public void Copy(ReadOnlySpan<char> span, int targetIndex)
     {
-        //int count = span.Length;
-        //if (count > Count - targetIndex)
-        //    count = Count - targetIndex;
-
-        //if (count <= 0)
-        //    return;
-
-        //Debug.Assert(targetIndex + count <= Count);
-
-        //// Copy characters
-        //span.CopyTo(Buffer.AsSpan(targetIndex, count));
-
-
-
         int count = span.Length;
         if (count > Count - targetIndex)
             count = Count - targetIndex;
@@ -299,4 +285,54 @@ public sealed partial class MutableString
         // Copy characters
         span[..count].CopyTo(Buffer.AsSpan(targetIndex, count));
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public MutableString TrimStart()
+    {
+        int i = 0;
+        while (i < Count && char.IsWhiteSpace(Buffer[i]))
+            i++;
+
+        if (i > 0)
+            Delete(0, i);
+
+        return this;
+    }
+
+    public MutableString TrimEnd()
+    {
+        int i = Count;
+        while (i > 0 && char.IsWhiteSpace(Buffer[i - 1]))
+            i--;
+
+        if (i < Count)
+            Delete(i, Count - i);
+
+        return this;
+    }
+
+    public MutableString Trim()
+    {
+        TrimEnd();
+        TrimStart();
+        return this;
+    }
+
 }
