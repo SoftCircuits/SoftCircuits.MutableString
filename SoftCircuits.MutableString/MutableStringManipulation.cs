@@ -1,4 +1,7 @@
-﻿using System.Diagnostics;
+﻿/////////////////////////////////////////////////////////////////////
+// Copyright (c) 2026 Jonathan Wood
+
+using System.Diagnostics;
 
 namespace SoftCircuits.MutableString;
 
@@ -286,24 +289,10 @@ public sealed partial class MutableString
         Array.Copy(Buffer, sourceIndex, Buffer, targetIndex, count);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /// <summary>
+    /// Trims leading whitespace off this <see cref="MutableString"/> instance.
+    /// </summary>
+    /// <returns>This string.</returns>
     public MutableString TrimStart()
     {
         int i = 0;
@@ -316,6 +305,10 @@ public sealed partial class MutableString
         return this;
     }
 
+    /// <summary>
+    /// Trims trailing whitespace off this <see cref="MutableString"/> instance.
+    /// </summary>
+    /// <returns>This string.</returns>
     public MutableString TrimEnd()
     {
         int i = Count;
@@ -328,11 +321,14 @@ public sealed partial class MutableString
         return this;
     }
 
+    /// <summary>
+    /// Trims leading and trailing whitespace off this <see cref="MutableString"/> instance.
+    /// </summary>
+    /// <returns>This string.</returns>
     public MutableString Trim()
     {
         TrimEnd();
         TrimStart();
         return this;
     }
-
 }

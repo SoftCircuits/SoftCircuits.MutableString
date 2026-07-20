@@ -1,4 +1,7 @@
-﻿namespace SoftCircuits.MutableString
+﻿/////////////////////////////////////////////////////////////////////
+// Copyright (c) 2026 Jonathan Wood
+
+namespace SoftCircuits.MutableString
 {
     public partial class MutableString
     {

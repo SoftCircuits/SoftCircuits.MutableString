@@ -1,4 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿/////////////////////////////////////////////////////////////////////
+// Copyright (c) 2026 Jonathan Wood
+
+using System.Diagnostics.CodeAnalysis;
 
 namespace SoftCircuits.MutableString;
 
@@ -23,15 +26,14 @@ public sealed partial class MutableString : ICloneable
     private int Count;
 
     /// <summary>
-    /// Returns the current value as a regular <see cref="String"/>.
+    /// Converts this <see cref="MutableString"/> instance to a <see cref="string"/>.
     /// </summary>
     public override string ToString() => new(Buffer, 0, Count);
 
     /// <summary>
-    /// 
+    /// Converts this <see cref="MutableString"/> instance to a <see cref="string"/>.
     /// </summary>
-    /// <param name="startIndex"></param>
-    /// <returns></returns>
+    /// <param name="startIndex">Index of starting character to return</param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public string ToString(int startIndex)
     {
@@ -41,11 +43,10 @@ public sealed partial class MutableString : ICloneable
     }
 
     /// <summary>
-    /// 
+    /// Converts this <see cref="MutableString"/> instance to a <see cref="string"/>.
     /// </summary>
-    /// <param name="startIndex"></param>
-    /// <param name="length"></param>
-    /// <returns></returns>
+    /// <param name="startIndex">Index of starting character to return</param>
+    /// <param name="length">Number of characters to return.</param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public string ToString(int startIndex, int length)
     {
@@ -57,10 +58,9 @@ public sealed partial class MutableString : ICloneable
     }
 
     /// <summary>
-    /// Creates a new span from this <see cref="MutableString"/> instance. The span is
-    /// only valid until the next modification of this instance.
+    /// Creates a new <see cref="ReadOnlySpan{T}"/> from this <see cref="MutableString"/>
+    /// instance. The span is only valid until the next modification of this instance.
     /// </summary>
-    /// <returns></returns>
     public ReadOnlySpan<char> AsSpan() => new(Buffer, 0, Count);
 
     #region ICloneable

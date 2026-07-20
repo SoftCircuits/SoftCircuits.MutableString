@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿/////////////////////////////////////////////////////////////////////
+// Copyright (c) 2026 Jonathan Wood
+
+using System.Collections;
 
 namespace SoftCircuits.MutableString;
 
@@ -6,6 +9,10 @@ public sealed partial class MutableString : IEnumerable<char>
 {
     private int EnumeratorVersion = 0;
 
+    /// <summary>
+    /// Returns an enumerator that iterates the characters in this <see cref="MutableString"/>.
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
     public IEnumerator<char> GetEnumerator()
     {
         int version = EnumeratorVersion;

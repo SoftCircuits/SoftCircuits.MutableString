@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿/////////////////////////////////////////////////////////////////////
+// Copyright (c) 2026 Jonathan Wood
+
+using System.Collections;
 
 namespace SoftCircuits.MutableString.Tests;
 

@@ -1,23 +1,10 @@
-﻿namespace SoftCircuits.MutableString;
+﻿/////////////////////////////////////////////////////////////////////
+// Copyright (c) 2026 Jonathan Wood
+
+namespace SoftCircuits.MutableString;
 
 public sealed partial class MutableString
 {
-
-    public void CopyTo(char[] destination, int index, int count)
-    {
-        //if (count > this.length)
-        //{
-        //    ThrowHelper.ThrowArgumentOutOfRangeException(nameof(count), "Number of copying characters is greater than the string length.");
-        //}
-
-        Array.Copy(Buffer, 0, destination, index, count);
-    }
-
-    public void CopyTo(Span<char> destination)
-    {
-        AsSpan().CopyTo(destination);
-    }
-
     /// <summary>
     /// Gets or sets the character at the specified index.
     /// </summary>
@@ -79,7 +66,7 @@ public sealed partial class MutableString
     }
 
     /// <summary>
-    /// Gets a value indicating whether this <see cref="MutableString"/> object is empty.
+    /// Gets a value indicating whether this <see cref="MutableString"/> object contains no characters.
     /// </summary>
     public bool IsEmpty => Count == 0;
 
@@ -99,4 +86,33 @@ public sealed partial class MutableString
             return true;
         }
     }
+
+    /// <summary>
+    /// Copies the contents of this <see cref="MutableString"/> to the specified
+    /// span.
+    /// </summary>
+    /// <param name="destination">The span to copy characters into.</param>
+    public void CopyTo(Span<char> destination)
+    {
+        AsSpan().CopyTo(destination);
+    }
+
+    /// <summary>
+    /// Copies the contents of this <see cref="MutableString"/> to the specified
+    /// array.
+    /// </summary>
+    /// <param name="destination">The span to copy characters into.</param>
+    /// <param name="index">The target index to copy characters.</param>
+    /// <param name="count">The number of characters to copy.</param>
+    public void CopyTo(char[] destination, int index, int count)
+    {
+#if NET8_0_OR_GREATER
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(count, Count);
+#else
+        if (count > Count)
+            throw new ArgumentOutOfRangeException(nameof(count));
+#endif
+        Array.Copy(Buffer, 0, destination, index, count);
+    }
+
 }

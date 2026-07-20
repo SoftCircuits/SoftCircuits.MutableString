@@ -8,18 +8,17 @@ Install-Package SoftCircuits.MutableString
 
 ## Overview
 
-MutableString is a .NET library that provides a mutable string class that can be modified without creating a new instance. This is useful for scenarios where you need to frequently modify string data, as it avoids the overhead of creating new string instances.
+MutableString is a .NET library that provides a mutable string class that can be modified without creating a new instance. For many operations, this is more efficient than modifying a regular `string`, which requires creating a new instance each time.
 
 ## MutableString Class
 
-
+Here's a simple example showing some of the included methods.
 
 ``` cs
 MutableString s = "Test!";      // Test!
 s.Insert(4, " this");           // Test this!
 s.Copy(5, 0, 4);                // this this!
 s.Replace(5, "test", 4);        // this test!
-s.Replace(0, "T", 1);           // This test!
+s[0] = 'T';                     // This test!
 s.Insert(4, " is a ");          // This is a test!
 ```
-

@@ -1,4 +1,7 @@
-﻿namespace SoftCircuits.MutableString.Tests
+﻿/////////////////////////////////////////////////////////////////////
+// Copyright (c) 2026 Jonathan Wood
+
+namespace SoftCircuits.MutableString.Tests
 {
     public class EquatableTests
     {
