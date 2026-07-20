@@ -10,11 +10,11 @@
         public static implicit operator string(MutableString ms) => ms.ToString();
 
         /// <summary>
-        /// Explicitly converts a <see cref="String"/> to a <see cref="MutableString"/>.
+        /// Implicitly converts a <see cref="String"/> to a <see cref="MutableString"/>.
         /// </summary>
         /// <param name="s">The string to convert.</param>
         /// <returns>The converted mutable string.</returns>
-        public static explicit operator MutableString(string s) => new(s);
+        public static implicit operator MutableString(string s) => new(s);
 
         public static MutableString operator +(MutableString? left, MutableString? right)
         {

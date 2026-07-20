@@ -88,7 +88,7 @@ public sealed partial class MutableString
 
         // Shift characters to make room
         if (index < oldLength)
-            Move(index, index + span.Length, oldLength - index);
+            Copy(index, index + span.Length, oldLength - index);
 
         // Copy string
         Copy(span, index);
@@ -171,7 +171,7 @@ public sealed partial class MutableString
             if (index + replaceCount < oldLength)
             {
                 int offset = index + replaceCount;
-                Move(offset, offset + delta, oldLength - offset);
+                Copy(offset, offset + delta, oldLength - offset);
             }
         }
         else if (delta < 0)
@@ -180,7 +180,7 @@ public sealed partial class MutableString
             if (index + replaceCount < oldLength)
             {
                 int offset = index + replaceCount;
-                Move(offset, offset + delta, oldLength - offset);
+                Copy(offset, offset + delta, oldLength - offset);
             }
 
             // Shrink array
@@ -208,29 +208,10 @@ public sealed partial class MutableString
 
         // Shift characters
         if (index + count < oldLength)
-            Move(index + count, index, oldLength - index - count);
+            Copy(index + count, index, oldLength - index - count);
 
         // Resize array
         Resize(oldLength - count);
-    }
-
-    /// <summary>
-    /// Copies characters from one part of the array to another.
-    /// </summary>
-    /// <param name="sourceIndex">Starting index of where characters are copied from.</param>
-    /// <param name="targetIndex">Starting index of where characters are copied to.</param>
-    /// <param name="count">The number of characters to copy.</param>
-    public void Move(int sourceIndex, int targetIndex, int count)
-    {
-        int maxCount = Count - Math.Max(sourceIndex, targetIndex);
-        if (count > maxCount)
-            count = maxCount;
-
-        if (count <= 0)
-            return;
-
-        // Copy characters
-        Array.Copy(Buffer, sourceIndex, Buffer, targetIndex, count);
     }
 
     /// <summary>
@@ -284,6 +265,25 @@ public sealed partial class MutableString
 
         // Copy characters
         span[..count].CopyTo(Buffer.AsSpan(targetIndex, count));
+    }
+
+    /// <summary>
+    /// Copies characters from one part of the array to another.
+    /// </summary>
+    /// <param name="sourceIndex">Starting index of where characters are copied from.</param>
+    /// <param name="targetIndex">Starting index of where characters are copied to.</param>
+    /// <param name="count">The number of characters to copy.</param>
+    public void Copy(int sourceIndex, int targetIndex, int count)
+    {
+        int maxCount = Count - Math.Max(sourceIndex, targetIndex);
+        if (count > maxCount)
+            count = maxCount;
+
+        if (count <= 0)
+            return;
+
+        // Copy characters
+        Array.Copy(Buffer, sourceIndex, Buffer, targetIndex, count);
     }
 
 
