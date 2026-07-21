@@ -18,7 +18,7 @@ Here's a simple example showing some of the included methods.
 MutableString s = "Test!";      // Test!
 s.Insert(4, " this");           // Test this!
 s.Copy(5, 0, 4);                // this this!
-s.Replace(5, "test", 4);        // this test!
+s.Replace(5, "test");           // this test!
 s[0] = 'T';                     // This test!
-s.Insert(4, " is a ");          // This is a test!
+s.Insert(4, " is a");           // This is a test!
 ```

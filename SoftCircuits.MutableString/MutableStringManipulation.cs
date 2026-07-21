@@ -98,7 +98,43 @@ public sealed partial class MutableString
     }
 
     /// <summary>
-    /// Inserts the specified <see cref="string"/>  at the specified index, replacing the specified number of characters.
+    /// Inserts the specified <see cref="string"/> at the specified index, replacing the characters at that
+    /// index.
+    /// </summary>
+    /// <param name="index">The index where the string should be inserted.</param>
+    /// <param name="s">The string to insert.</param>
+    public void Replace(int index, string? s)
+    {
+        if (s != null)
+            Replace(index, s.AsSpan(), s.Length);
+    }
+
+    /// <summary>
+    /// Inserts the specified char array at the specified index, replacing the characters at that
+    /// index.
+    /// </summary>
+    /// <param name="index">The index where the char array should be inserted.</param>
+    /// <param name="array">The char array to insert.</param>
+    public void Replace(int index, char[]? array)
+    {
+        if (array != null)
+            Replace(index, array.AsSpan(), array.Length);
+    }
+
+    /// <summary>
+    /// Inserts the specified <see cref="MutableString"/> at the specified index, replacing the characters at that
+    /// index.
+    /// </summary>
+    /// <param name="index">The index where the string should be inserted.</param>
+    /// <param name="value">The string to insert.</param>
+    public void Replace(int index, MutableString? value)
+    {
+        if (value != null)
+            Replace(index, value.Buffer.AsSpan(0, value.Count), value.Length);
+    }
+
+    /// <summary>
+    /// Inserts the specified <see cref="string"/> at the specified index, replacing the specified number of characters.
     /// <paramref name="replaceCount"/> can be less than or greater than the length of <paramref name="s"/>.
     /// </summary>
     /// <param name="index">The index where the string should be inserted.</param>
@@ -116,7 +152,7 @@ public sealed partial class MutableString
     public void Replace(int index, char[]? array, int replaceCount) => Replace(index, array.AsSpan(), replaceCount);
 
     /// <summary>
-    /// Inserts the specified <see cref="MutableString"/>  at the specified index, replacing the specified number of characters.
+    /// Inserts the specified <see cref="MutableString"/> at the specified index, replacing the specified number of characters.
     /// <paramref name="replaceCount"/> can be less than or greater than the length of <paramref name="value"/>.
     /// </summary>
     /// <param name="index">The index where the string should be inserted.</param>
@@ -135,7 +171,7 @@ public sealed partial class MutableString
     }
 
     /// <summary>
-    /// Inserts the specified <see cref="ReadOnlySpan{Char}"/>  at the specified index, replacing the specified number of characters.
+    /// Inserts the specified <see cref="ReadOnlySpan{Char}"/> at the specified index, replacing the specified number of characters.
     /// <paramref name="replaceCount"/> can be less than or greater than the length of <paramref name="span"/>.
     /// </summary>
     /// <param name="index">The index where the string should be inserted.</param>

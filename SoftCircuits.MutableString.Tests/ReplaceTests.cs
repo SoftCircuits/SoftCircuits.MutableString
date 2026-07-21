@@ -5,6 +5,33 @@ namespace SoftCircuits.MutableString.Tests;
 
 public class ReplaceTests
 {
+
+    //[Fact]
+    //public void Replace_Grow_ReplacementLongerThanReplaced()
+    //{
+    //    MutableString ms = new("hello world");
+    //    ms.Replace(6, "there everyone", 5); // replaces "world" (5 chars)
+    //    Assert.Equal("hello there everyone", ms.ToString());
+    //}
+
+    //[Fact]
+    //public void Replace_Shrink_ReplacementShorterThanReplaced()
+    //{
+    //    MutableString ms = new("hello world");
+    //    ms.Replace(0, "hi", 5); // replaces "hello" (5 chars)
+    //    Assert.Equal("hi world", ms.ToString());
+    //}
+
+    //[Fact]
+    //public void Replace_EqualLength()
+    //{
+    //    MutableString ms = new("hello world");
+    //    ms.Replace(6, "WORLD", 5); // replaces "world" with same-length "WORLD"
+    //    Assert.Equal("hello WORLD", ms.ToString());
+    //}
+
+
+
     [Fact]
     public void Replace_Grow_ReplacementLongerThanReplaced()
     {
@@ -26,6 +53,14 @@ public class ReplaceTests
     {
         MutableString ms = new("hello world");
         ms.Replace(6, "WORLD", 5); // replaces "world" with same-length "WORLD"
+        Assert.Equal("hello WORLD", ms.ToString());
+    }
+
+    [Fact]
+    public void Replace_EqualLengthNoLengthArg()
+    {
+        MutableString ms = new("hello world");
+        ms.Replace(6, "WORLD"); // replaces "world" with same-length "WORLD"
         Assert.Equal("hello WORLD", ms.ToString());
     }
 
