@@ -6,12 +6,12 @@ namespace SoftCircuits.MutableString
     public sealed partial class MutableString
     {
         /// <summary>
-        /// Implicitly converts a <see cref="MutableString"/> to a <see cref="string"/>.
+        /// Implicitly converts a <see cref="MutableString"/> to <see cref="string"/>.
         /// </summary>
         public static implicit operator string(MutableString ms) => ms.ToString();
 
         /// <summary>
-        /// Implicitly converts a <see cref="string"/> to a <see cref="MutableString"/>.
+        /// Implicitly converts a <see cref="string"/> to <see cref="MutableString"/>.
         /// </summary>
         public static implicit operator MutableString(string s) => new(s);
 
@@ -36,7 +36,7 @@ namespace SoftCircuits.MutableString
         }
 
         /// <summary>
-        /// Implements <c>+</c> operator for a <see cref="MutableString"/> and <see cref="string"/>.
+        /// Implements <c>+</c> operator for a <see cref="string"/> and <see cref="MutableString"/>.
         /// </summary>
         public static MutableString operator +(string? left, MutableString? right)
         {
@@ -49,25 +49,25 @@ namespace SoftCircuits.MutableString
         /// Implements <c>&lt;</c> operator for two <see cref="MutableString"/>s.
         /// </summary>
         public static bool operator <(MutableString? left, MutableString? right)
-            => left is null ? right is not null : left.CompareTo(right) < 0;
+        {
+            if (left is null)
+                return right is not null;
+            return left.CompareTo(right) < 0;
+        }
 
         /// <summary>
         /// Implements <c>&gt;</c> operator for two <see cref="MutableString"/>s.
         /// </summary>
-        public static bool operator >(MutableString? left, MutableString? right)
-            => right < left;
+        public static bool operator >(MutableString? left, MutableString? right) => right < left;
 
         /// <summary>
         /// Implements <c>&lt;=</c> operator for two <see cref="MutableString"/>s.
         /// </summary>
-        public static bool operator <=(MutableString? left, MutableString? right)
-            => !(left > right);
+        public static bool operator <=(MutableString? left, MutableString? right) => !(left > right);
 
         /// <summary>
         /// Implements <c>&gt;=</c> operator for two <see cref="MutableString"/>s.
         /// </summary>
-        public static bool operator >=(MutableString? left, MutableString? right)
-            => !(left < right);
-
+        public static bool operator >=(MutableString? left, MutableString? right) => !(left < right);
     }
 }

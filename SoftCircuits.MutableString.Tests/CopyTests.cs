@@ -116,4 +116,68 @@ public class CopyTests
 
         Assert.Equal("hello EARTH", ms.ToString());
     }
+
+    [Fact]
+    public void Copy_Forward_OverwritesTargetRegion()
+    {
+        MutableString ms = new("abcdef");
+        ms.Copy(0, 2, 3); // copy "abc" over positions 2..4
+        Assert.Equal("ababcf", ms.ToString());
+    }
+
+    [Fact]
+    public void Copy_Backward_OverwritesTargetRegion()
+    {
+        MutableString ms = new("abcdef");
+        ms.Copy(3, 0, 3); // copy "def" over positions 0..2
+        Assert.Equal("defdef", ms.ToString());
+    }
+
+    [Fact]
+    public void Copy_CountExceedingAvailable_IsClampedBySourceBound()
+    {
+        MutableString ms = new("abcde");
+        ms.Copy(2, 0, 100); // only "cde" (3 chars) available from source index 2
+        Assert.Equal("cdede", ms.ToString());
+    }
+
+    [Fact]
+    public void Copy_CountExceedingAvailable_IsClampedByTargetBound()
+    {
+        MutableString ms = new("abcde");
+        ms.Copy(0, 2, 100); // only 3 slots available at the target starting at index 2
+        Assert.Equal("ababc", ms.ToString());
+    }
+
+    [Fact]
+    public void Copy_ZeroCount_IsNoOp()
+    {
+        MutableString ms = new("abcdef");
+        ms.Copy(0, 3, 0);
+        Assert.Equal("abcdef", ms.ToString());
+    }
+
+    [Fact]
+    public void Copy_NegativeCount_IsNoOp()
+    {
+        MutableString ms = new("abcdef");
+        ms.Copy(0, 3, -5);
+        Assert.Equal("abcdef", ms.ToString());
+    }
+
+    [Fact]
+    public void Copy_SourceEqualsTarget_IsEffectivelyNoOp()
+    {
+        MutableString ms = new("abcdef");
+        ms.Copy(1, 1, 3);
+        Assert.Equal("abcdef", ms.ToString());
+    }
+
+    [Fact]
+    public void Copy_DoesNotChangeLength()
+    {
+        MutableString ms = new("abcdef");
+        ms.Copy(0, 2, 3);
+        Assert.Equal(6, ms.Length);
+    }
 }

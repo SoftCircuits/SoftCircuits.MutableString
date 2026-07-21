@@ -73,7 +73,9 @@ namespace SoftCircuits.MutableString.Tests
         public void Equals_MutableString_OnlyUsesLogicalLength_NotBufferCapacity()
         {
             // Regression check: equality must respect Count, not leftover Buffer capacity.
+#pragma warning disable IDE0017 // Simplify object initialization
             MutableString source = new("hello-extra");
+#pragma warning restore IDE0017 // Simplify object initialization
             source.Length = 5; // logically "hello"
 
             MutableString target = new("hello");
@@ -206,7 +208,9 @@ namespace SoftCircuits.MutableString.Tests
         [Fact]
         public void GetHashCode_OnlyUsesLogicalLength_NotBufferCapacity()
         {
+#pragma warning disable IDE0017 // Simplify object initialization
             MutableString source = new("hello-extra");
+#pragma warning restore IDE0017 // Simplify object initialization
             source.Length = 5; // logically "hello"
 
             Assert.Equal("hello".GetHashCode(), source.GetHashCode());

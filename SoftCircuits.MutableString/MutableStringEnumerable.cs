@@ -19,6 +19,7 @@ public sealed partial class MutableString : IEnumerable<char>
 
         for (int i = 0; i < Count; i++)
         {
+            // Check guard for changes to MutableString during enumeration
             if (version != EnumeratorVersion)
                 throw new InvalidOperationException("MutableString was modified during enumeration.");
 

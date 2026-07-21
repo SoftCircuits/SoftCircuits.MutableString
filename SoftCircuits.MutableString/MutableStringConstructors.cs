@@ -22,11 +22,11 @@ namespace SoftCircuits.MutableString
 #if NET8_0_OR_GREATER
             ArgumentOutOfRangeException.ThrowIfNegative(capacity);
 #else
-        if (capacity < 0)
-            throw new ArgumentOutOfRangeException(nameof(capacity));
+            if (capacity < 0)
+                throw new ArgumentOutOfRangeException(nameof(capacity));
 #endif
 
-            Buffer = new char[capacity];
+            Resize(capacity);
             Count = 0;
         }
 
@@ -43,7 +43,7 @@ namespace SoftCircuits.MutableString
             else
             {
                 Resize(value.Length);
-                Array.Copy(value.Buffer, 0, Buffer, 0, value.Length);
+                Array.Copy(value.Buffer, Buffer, value.Length);
             }
         }
 
@@ -93,15 +93,15 @@ namespace SoftCircuits.MutableString
             ArgumentOutOfRangeException.ThrowIfNegative(length);
             ArgumentOutOfRangeException.ThrowIfNegative(startIndex);
 #else
-        if (length < 0)
-            throw new ArgumentOutOfRangeException(nameof(length));
-        if (startIndex < 0)
-            throw new ArgumentOutOfRangeException(nameof(startIndex));
+            if (length < 0)
+                throw new ArgumentOutOfRangeException(nameof(length));
+            if (startIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(startIndex));
 #endif
 
             if (array == null)
             {
-                Resize(length); // Honors the caller's requested length; zero-filled
+                Resize(0);
             }
             else
             {

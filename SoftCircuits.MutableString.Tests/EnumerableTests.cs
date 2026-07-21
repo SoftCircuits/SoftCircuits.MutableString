@@ -35,7 +35,9 @@ public class EnumerableTests
     public void GetEnumerator_OnlyEnumeratesLogicalLength_NotBufferCapacity()
     {
         // Regression check: must stop at Count, not walk into unused Buffer capacity.
+#pragma warning disable IDE0017 // Simplify object initialization
         MutableString ms = new("hello world");
+#pragma warning restore IDE0017 // Simplify object initialization
         ms.Length = 5; // logically "hello"; Buffer retains extra capacity
 
         List<char> result = [];

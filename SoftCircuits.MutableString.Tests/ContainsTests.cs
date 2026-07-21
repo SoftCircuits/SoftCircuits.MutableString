@@ -480,10 +480,10 @@ public class ContainsTests
     public void Split_Char_OnlyUsesLogicalLength_NotBufferCapacity()
     {
         // Regression check: split must operate on Count, not leftover Buffer capacity.
-        MutableString ms = new("a,b,c,extra");
 #pragma warning disable IDE0017 // Simplify object initialization
-        ms.Length = 5; // logically "a,b,c"
+        MutableString ms = new("a,b,c,extra");
 #pragma warning restore IDE0017 // Simplify object initialization
+        ms.Length = 5; // logically "a,b,c"
 
         string[] result = ms.Split(',');
         Assert.Equal(["a", "b", "c"], result);

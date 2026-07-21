@@ -114,5 +114,4 @@ public sealed partial class MutableString
 #endif
         Array.Copy(Buffer, 0, destination, index, count);
     }
-
 }

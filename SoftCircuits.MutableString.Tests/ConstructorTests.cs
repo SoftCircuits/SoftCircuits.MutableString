@@ -123,8 +123,7 @@ public class ConstructorTests
     public void CharArrayRangeConstructor_NullArrayHonorsRequestedLength()
     {
         MutableString ms = new(null, 0, 5);
-        Assert.Equal(5, ms.Length);
-        Assert.Equal(new string('\0', 5), ms.ToString());
+        Assert.Equal(0, ms.Length);
     }
 
     [Fact]

@@ -77,7 +77,9 @@ public class ComparableTests
     public void CompareTo_MutableString_OnlyUsesLogicalLength()
     {
         // Regression check: comparison must respect Count, not Buffer capacity.
+#pragma warning disable IDE0017 // Simplify object initialization
         MutableString source = new("apple-extra");
+#pragma warning restore IDE0017 // Simplify object initialization
         source.Length = 5; // logically "apple"
 
         MutableString target = new("apple");
