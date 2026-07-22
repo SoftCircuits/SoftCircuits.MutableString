@@ -2,11 +2,14 @@
 // Copyright (c) 2026 Jonathan Wood
 
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace SoftCircuits.MutableString;
 
 public sealed partial class MutableString
 {
+    #region Append
+
     /// <summary>
     /// Appends the specified <see cref="string"/> to this object.
     /// </summary>
@@ -46,6 +49,10 @@ public sealed partial class MutableString
         Copy(span, oldLength);
     }
 
+    #endregion
+
+    #region Insert
+
     /// <summary>
     /// Inserts the specified string at the specified index.
     /// </summary>
@@ -78,7 +85,7 @@ public sealed partial class MutableString
     /// <param name="span">The span to insert.</param>
     public void Insert(int index, ReadOnlySpan<char> span)
     {
-        if (span.Length == 0 || index < 0)
+        if (index < 0 || span.Length == 0)
             return;
 
         // Ensure valid index
@@ -96,6 +103,39 @@ public sealed partial class MutableString
         // Copy string
         Copy(span, index);
     }
+
+    /// <summary>
+    /// Inserts the specified character at the specified index repeated
+    /// specified number of times.
+    /// </summary>
+    /// <param name="index">The index where the characters should be inserted.</param>
+    /// <param name="c">The character to insert.</param>
+    /// <param name="count">The number of times the character should be inserted.</param>
+    public void Insert(int index, char c, int count)
+    {
+        if (index < 0 || count <= 0)
+            return;
+
+        // Ensure valid index
+        int oldLength = Count;
+        if (index > oldLength)
+            index = oldLength;
+
+        // Resize array
+        Resize(oldLength + count);
+
+        // Shift characters to make room
+        if (index < oldLength)
+            Copy(index, index + count, oldLength - index);
+
+        // Insert characters
+        for (int i = 0; i < count; i++)
+            Buffer[index + i] = c;
+    }
+
+    #endregion
+
+    #region Replace
 
     /// <summary>
     /// Inserts the specified <see cref="string"/> at the specified index, replacing the characters at that
@@ -162,7 +202,7 @@ public sealed partial class MutableString
     {
         if (value == null)
         {
-            Delete(index, replaceCount);
+            Remove(index, replaceCount);
         }
         else
         {
@@ -184,7 +224,7 @@ public sealed partial class MutableString
 
         if (span.Length == 0)
         {
-            Delete(index, replaceCount);
+            Remove(index, replaceCount);
             return;
         }
 
@@ -230,15 +270,77 @@ public sealed partial class MutableString
         Copy(span, index);
     }
 
+    ///////////////////////////////////////////////////////////////////////
+    // String Replacement methods
+
+    /// <summary>
+    /// Replaces all occurrences of <paramref name="oldChar"/> with <paramref name="newChar"/>.
+    /// </summary>
+    /// <param name="oldChar">The character to be replaced.</param>
+    /// <param name="newChar">The new character.</param>
+    public void Replace(char oldChar, char newChar)
+    {
+        for (int i = 0; i < Count; i++)
+        {
+            if (Buffer[i] == oldChar)
+                Buffer[i] = newChar;
+        }
+    }
+
+    /// <summary>
+    /// Replaces all occurrences of <paramref name="oldValue"/> with <paramref name="newValue"/>.
+    /// </summary>
+    /// <param name="oldValue">The string to be replaced.</param>
+    /// <param name="newValue">The new string.</param>
+    public void Replace(string oldValue, string? newValue)
+    {
+        newValue ??= string.Empty;
+
+        int i = 0;
+        while (true)
+        {
+            i = IndexOf(oldValue, i);
+            if (i < 0)
+                break;
+            Replace(i, newValue, oldValue.Length);
+            i += newValue.Length;
+        }
+    }
+
+    /// <summary>
+    /// Replaces all occurrences of <paramref name="oldValue"/> with <paramref name="newValue"/>.
+    /// </summary>
+    /// <param name="oldValue">The string to be replaced.</param>
+    /// <param name="newValue">The new string.</param>
+    /// <param name="comparisonType">The type of comparison to perform.</param>
+    public void Replace(string oldValue, string? newValue, StringComparison comparisonType)
+    {
+        newValue ??= string.Empty;
+
+        int i = 0;
+        while (true)
+        {
+            i = IndexOf(oldValue, i, comparisonType);
+            if (i < 0)
+                break;
+            Replace(i, newValue, oldValue.Length);
+            i += newValue.Length;
+        }
+    }
+
+    #endregion
+
+    #region Delete
+
     /// <summary>
     /// Deletes the specified number of characters at the specified index.
     /// </summary>
     /// <param name="index">The starting index where characters should be deleted.</param>
     /// <param name="count">The number of characters to delete.</param>
-    public void Delete(int index, int count)
+    public void Remove(int index, int count)
     {
         int oldLength = Count;
-        if (index >= oldLength || count <= 0 || index < 0)
+        if (index < 0 || index >= oldLength || count <= 0)
             return;
 
         int maxCount = oldLength - index;
@@ -252,6 +354,17 @@ public sealed partial class MutableString
         // Resize array
         Resize(oldLength - count);
     }
+
+    /// <summary>
+    /// Deletes all characters starting at the specified index until the end
+    /// of the string.
+    /// </summary>
+    /// <param name="index">The starting index where characters should be deleted.</param>
+    public void Remove(int index) => Remove(index, Count - index);
+
+    #endregion
+
+    #region Copy
 
     /// <summary>
     /// Copies the given string to this <see cref="MutableString"/> object at the specified index.
@@ -325,46 +438,88 @@ public sealed partial class MutableString
         Array.Copy(Buffer, sourceIndex, Buffer, targetIndex, count);
     }
 
+    #endregion
+
+    #region Trim
+
     /// <summary>
     /// Trims leading whitespace off this <see cref="MutableString"/> instance.
     /// </summary>
-    /// <returns>This string.</returns>
-    public MutableString TrimStart()
+    public void TrimStart()
     {
         int i = 0;
         while (i < Count && char.IsWhiteSpace(Buffer[i]))
             i++;
 
         if (i > 0)
-            Delete(0, i);
-
-        return this;
+            Remove(0, i);
     }
 
     /// <summary>
     /// Trims trailing whitespace off this <see cref="MutableString"/> instance.
     /// </summary>
-    /// <returns>This string.</returns>
-    public MutableString TrimEnd()
+    public void TrimEnd()
     {
         int i = Count;
         while (i > 0 && char.IsWhiteSpace(Buffer[i - 1]))
             i--;
 
         if (i < Count)
-            Delete(i, Count - i);
-
-        return this;
+            Remove(i, Count - i);
     }
 
     /// <summary>
     /// Trims leading and trailing whitespace off this <see cref="MutableString"/> instance.
     /// </summary>
-    /// <returns>This string.</returns>
-    public MutableString Trim()
+    public void Trim()
     {
         TrimEnd();
         TrimStart();
-        return this;
     }
+
+    #endregion
+
+    #region Pad
+
+    /// <summary>
+    /// Right aligns the characters in this string by padding them with spaces on the left,
+    /// for the specified total length.
+    /// </summary>
+    /// <param name="totalWidth"></param>
+    /// <param name="paddingChar"></param>
+    public void PadLeft(int totalWidth, char paddingChar)
+    {
+        int padCount = totalWidth - Count;
+        if (padCount <= 0)
+            return;
+        Insert(0, paddingChar, padCount);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="totalWidth"></param>
+    public void PadLeft(int totalWidth) => PadLeft(totalWidth, ' ');
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="totalWidth"></param>
+    /// <param name="paddingChar"></param>
+    public void PadRight(int totalWidth, char paddingChar)
+    {
+        int padCount = totalWidth - Count;
+        if (padCount <= 0)
+            return;
+        Insert(Count, paddingChar, padCount);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="totalWidth"></param>
+    public void PadRight(int totalWidth) => PadRight(totalWidth, ' ');
+
+    #endregion
+
 }

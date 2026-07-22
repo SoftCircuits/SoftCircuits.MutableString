@@ -3,111 +3,135 @@
 
 namespace SoftCircuits.MutableString.Tests;
 
-public class DeleteTests
+public class RemoveTests
 {
     [Fact]
-    public void Delete_FromMiddle()
+    public void Remove_FromMiddle()
     {
         MutableString ms = new("hello world");
-        ms.Delete(5, 1); // remove the space
+        ms.Remove(5, 1); // remove the space
         Assert.Equal("helloworld", ms.ToString());
     }
 
     [Fact]
-    public void Delete_FromStart()
+    public void Remove_FromStart()
     {
         MutableString ms = new("hello world");
-        ms.Delete(0, 6);
+        ms.Remove(0, 6);
         Assert.Equal("world", ms.ToString());
     }
 
     [Fact]
-    public void Delete_ToEnd()
+    public void Remove_ToEnd()
     {
         MutableString ms = new("hello world");
-        ms.Delete(5, 6);
+        ms.Remove(5, 6);
         Assert.Equal("hello", ms.ToString());
     }
 
     [Fact]
-    public void Delete_EntireString()
+    public void Remove_EntireString()
     {
         MutableString ms = new("hello");
-        ms.Delete(0, 5);
+        ms.Remove(0, 5);
         Assert.Equal("", ms.ToString());
         Assert.Equal(0, ms.Length);
     }
 
     [Fact]
-    public void Delete_CountExceedingAvailable_IsClamped()
+    public void Remove_CountExceedingAvailable_IsClamped()
     {
         MutableString ms = new("hello");
-        ms.Delete(2, 1000);
+        ms.Remove(2, 1000);
         Assert.Equal("he", ms.ToString());
     }
 
     [Fact]
-    public void Delete_ZeroCount_IsNoOp()
+    public void Remove_ZeroCount_IsNoOp()
     {
         MutableString ms = new("hello");
-        ms.Delete(2, 0);
+        ms.Remove(2, 0);
         Assert.Equal("hello", ms.ToString());
     }
 
     [Fact]
-    public void Delete_NegativeCount_IsNoOp()
+    public void Remove_NegativeCount_IsNoOp()
     {
         MutableString ms = new("hello");
-        ms.Delete(2, -5);
+        ms.Remove(2, -5);
         Assert.Equal("hello", ms.ToString());
     }
 
     [Fact]
-    public void Delete_NegativeIndex_IsNoOp()
+    public void Remove_NegativeIndex_IsNoOp()
     {
         MutableString ms = new("hello");
-        ms.Delete(-1, 2);
+        ms.Remove(-1, 2);
         Assert.Equal("hello", ms.ToString());
     }
 
     [Fact]
-    public void Delete_IndexEqualToLength_IsNoOp()
+    public void Remove_IndexEqualToLength_IsNoOp()
     {
         MutableString ms = new("hello");
-        ms.Delete(5, 1);
+        ms.Remove(5, 1);
         Assert.Equal("hello", ms.ToString());
     }
 
     [Fact]
-    public void Delete_IndexBeyondLength_IsNoOp()
+    public void Remove_IndexBeyondLength_IsNoOp()
     {
         MutableString ms = new("hello");
-        ms.Delete(1000, 1);
+        ms.Remove(1000, 1);
         Assert.Equal("hello", ms.ToString());
     }
 
     [Fact]
-    public void Delete_OnEmptyString_IsNoOp()
+    public void Remove_OnEmptyString_IsNoOp()
     {
         MutableString ms = new();
-        ms.Delete(0, 1);
+        ms.Remove(0, 1);
         Assert.Equal("", ms.ToString());
     }
 
     [Fact]
-    public void Delete_SingleCharacter_PreservesSurroundingText()
+    public void Remove_SingleCharacter_PreservesSurroundingText()
     {
         MutableString ms = new("0123456789");
-        ms.Delete(4, 1);
+        ms.Remove(4, 1);
         Assert.Equal("012356789", ms.ToString());
     }
 
     [Fact]
-    public void Delete_UpdatesLengthCorrectly()
+    public void Remove_UpdatesLengthCorrectly()
     {
         MutableString ms = new("hello world");
-        ms.Delete(5, 6);
+        ms.Remove(5, 6);
         Assert.Equal(5, ms.Length);
+    }
+
+    [Fact]
+    public void Remove_FromStartToEnd()
+    {
+        MutableString ms = new("hello world");
+        ms.Remove(0);
+        Assert.Equal("", ms.ToString());
+    }
+
+    [Fact]
+    public void Remove_FromMiddleToEnd()
+    {
+        MutableString ms = new("hello world");
+        ms.Remove(5);
+        Assert.Equal("hello", ms.ToString());
+    }
+
+    [Fact]
+    public void Remove_FromEndToEnd()
+    {
+        MutableString ms = new("hello world");
+        ms.Remove(ms.Length);
+        Assert.Equal("hello world", ms.ToString());
     }
 
     // --- TrimStart ---
@@ -168,14 +192,6 @@ public class DeleteTests
         Assert.Equal(5, ms.Length);
     }
 
-    [Fact]
-    public void TrimStart_ReturnsSameInstance_ForChaining()
-    {
-        MutableString ms = new("   hello");
-        MutableString result = ms.TrimStart();
-        Assert.Same(ms, result);
-    }
-
     // --- TrimEnd ---
 
     [Fact]
@@ -224,14 +240,6 @@ public class DeleteTests
         MutableString ms = new("hello   ");
         ms.TrimEnd();
         Assert.Equal(5, ms.Length);
-    }
-
-    [Fact]
-    public void TrimEnd_ReturnsSameInstance_ForChaining()
-    {
-        MutableString ms = new("hello   ");
-        MutableString result = ms.TrimEnd();
-        Assert.Same(ms, result);
     }
 
     // --- Trim ---
@@ -301,18 +309,11 @@ public class DeleteTests
     }
 
     [Fact]
-    public void Trim_ReturnsSameInstance_ForChaining()
-    {
-        MutableString ms = new("   hello   ");
-        MutableString result = ms.Trim();
-        Assert.Same(ms, result);
-    }
-
-    [Fact]
     public void Trim_ChainsWithOtherMutatingMethods()
     {
         MutableString ms = new("   hello   ");
-        ms.Trim().Append("!");
+        ms.Trim();
+        ms.Append("!");
         Assert.Equal("hello!", ms.ToString());
     }
 

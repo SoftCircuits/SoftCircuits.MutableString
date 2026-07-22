@@ -15,12 +15,52 @@ public class OperatorTests
         Assert.Equal("hello", s);
     }
 
-    // --- explicit conversion from string ---
+    // --- implicit conversion from string ---
 
     [Fact]
     public void ExplicitConversion_FromString_CreatesEquivalentMutableString()
     {
-        MutableString ms = (MutableString)"hello";
+        MutableString ms = "hello";
+        Assert.Equal("hello", ms.ToString());
+    }
+
+    // --- implicit conversion to ReadOnlySpan<char> ---
+
+    [Fact]
+    public void ImplicitConversion_ToSpan_ReturnsContent()
+    {
+        MutableString ms = new("hello");
+        ReadOnlySpan<char> span = ms;
+        Assert.Equal("hello", span);
+    }
+
+    // --- implicit conversion from ReadOnlySpan<char> ---
+
+    [Fact]
+    public void ExplicitConversion_FromSpan_CreatesEquivalentMutableString()
+    {
+        ReadOnlySpan<char> span = "hello".AsSpan();
+        MutableString ms = span;
+        Assert.Equal("hello", ms.ToString());
+    }
+
+    // --- implicit conversion to char[] ---
+
+    [Fact]
+    public void ImplicitConversion_ToArray_ReturnsContent()
+    {
+        MutableString ms = new("hello");
+        string s = ms;
+        Assert.Equal("hello", s);
+    }
+
+    // --- implicit conversion from char[] ---
+
+    [Fact]
+    public void ExplicitConversion_FromArray_CreatesEquivalentMutableString()
+    {
+        char[] array = [.. "hello"];
+        MutableString ms = array;
         Assert.Equal("hello", ms.ToString());
     }
 

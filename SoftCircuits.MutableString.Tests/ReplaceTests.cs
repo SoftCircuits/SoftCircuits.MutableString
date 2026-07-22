@@ -194,4 +194,87 @@ public class ReplaceTests
         ms.Replace(1, "X", 4);
         Assert.Equal(3, ms.Length);
     }
+
+    // String style Replace
+
+    [Fact]
+    public void Replace_Char()
+    {
+        MutableString ms = new("seven");
+        ms.Replace('e', 'a');
+        Assert.Equal("savan", ms.ToString());
+    }
+
+    [Fact]
+    public void Replace_CharAtEnds()
+    {
+        MutableString ms = new("level");
+        ms.Replace('l', 'r');
+        Assert.Equal("rever", ms.ToString());
+    }
+
+    [Fact]
+    public void Replace_StringSameLength()
+    {
+        MutableString ms = new("This and that and the other");
+        ms.Replace("and", "abc");
+        Assert.Equal("This abc that abc the other", ms.ToString());
+    }
+
+    [Fact]
+    public void Replace_StringShorter()
+    {
+        MutableString ms = new("This and that and the other");
+        ms.Replace("and", "or");
+        Assert.Equal("This or that or the other", ms.ToString());
+    }
+
+    [Fact]
+    public void Replace_StringLonger()
+    {
+        MutableString ms = new("This and that and the other");
+        ms.Replace("and", "and also");
+        Assert.Equal("This and also that and also the other", ms.ToString());
+    }
+
+    [Fact]
+    public void Replace_StringWithEmpty()
+    {
+        MutableString ms = new("This and that and the other");
+        ms.Replace("and", "");
+        Assert.Equal("This  that  the other", ms.ToString());
+    }
+
+    [Fact]
+    public void Replace_StringWithNull()
+    {
+        MutableString ms = new("This and that and the other");
+        ms.Replace("and", (string?)null);
+        Assert.Equal("This  that  the other", ms.ToString());
+    }
+
+
+    [Fact]
+    public void Replace_StringSameLengthCaseInsensitive()
+    {
+        MutableString ms = new("This and that and the other");
+        ms.Replace("AND", "abc", StringComparison.OrdinalIgnoreCase);
+        Assert.Equal("This abc that abc the other", ms.ToString());
+    }
+
+    [Fact]
+    public void Replace_StringShorterCaseInsensitive()
+    {
+        MutableString ms = new("This and that and the other");
+        ms.Replace("AND", "or", StringComparison.OrdinalIgnoreCase);
+        Assert.Equal("This or that or the other", ms.ToString());
+    }
+
+    [Fact]
+    public void Replace_StringLongerCaseInsensitive()
+    {
+        MutableString ms = new("This and that and the other");
+        ms.Replace("AND", "and also", StringComparison.OrdinalIgnoreCase);
+        Assert.Equal("This and also that and also the other", ms.ToString());
+    }
 }

@@ -118,7 +118,7 @@ public class EnumerableTests
             foreach (char c in ms)
             {
                 if (c == 'e')
-                    ms.Delete(0, 1); // triggers Resize mid-enumeration
+                    ms.Remove(0, 1); // triggers Resize mid-enumeration
             }
         });
     }

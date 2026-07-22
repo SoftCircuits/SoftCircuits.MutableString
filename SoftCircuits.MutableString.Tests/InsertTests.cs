@@ -139,4 +139,28 @@ public class InsertTests
         ms.Insert(3, "---");
         Assert.Equal("012---3456789", ms.ToString());
     }
+
+    [Fact]
+    public void Insert_CharacterAtStart()
+    {
+        MutableString ms = new("0123456789");
+        ms.Insert(0, '*', 5);
+        Assert.Equal("*****0123456789", ms.ToString());
+    }
+
+    [Fact]
+    public void Insert_CharacterInMiddle()
+    {
+        MutableString ms = new("0123456789");
+        ms.Insert(5, '*', 5);
+        Assert.Equal("01234*****56789", ms.ToString());
+    }
+
+    [Fact]
+    public void Insert_CharacterAtEnd()
+    {
+        MutableString ms = new("0123456789");
+        ms.Insert(ms.Length, '*', 5);
+        Assert.Equal("0123456789*****", ms.ToString());
+    }
 }
