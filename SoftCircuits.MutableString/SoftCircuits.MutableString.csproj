@@ -8,7 +8,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>SoftCircuits.MutableString</Title>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <Company>SoftCircuits</Company>
     <Authors>Jonathan Wood</Authors>
     <Description>Lightweight editable string class.</Description>
@@ -17,7 +17,7 @@
     <PackageProjectUrl>https://github.com/SoftCircuits/SoftCircuits.MutableString</PackageProjectUrl>
     <RepositoryUrl>https://github.com/SoftCircuits/SoftCircuits.MutableString</RepositoryUrl>
     <PackageTags>string; mutable; mutable string</PackageTags>
-    <PackageReleaseNotes>WARNING: Contains breaking changges; Added ReadOnlySpan&lt;char&gt; operators; Trim() methods are now type void;  Renamed Delete() to Remove() to match string version; Added PadLeft() and PadRight() methods; Added new Insert() overload; miscellaneous tweaks and fixes.</PackageReleaseNotes>
+    <PackageReleaseNotes>Minor code review and restructering; Minor tweaks.</PackageReleaseNotes>
     <PackageIcon>Logo_128x128.png</PackageIcon>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
