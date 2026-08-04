@@ -5,11 +5,6 @@ namespace SoftCircuits.MutableString;
 
 public sealed partial class MutableString
 {
-
-    // TODO:
-    // - IndexOfAny()
-    // - LastInddexOfAny()
-
     #region IndexOf
 
     // --- char overloads ---
@@ -19,7 +14,7 @@ public sealed partial class MutableString
     /// </summary>
     /// <param name="value">The value to find.</param>
     public int IndexOf(char value)
-        => IndexOf(value, 0, Count, StringComparison.Ordinal);
+        => IndexOf(value, 0, InternalLength, StringComparison.Ordinal);
 
     /// <summary>
     /// Returns the zero-based index of the first occurrence of the specified value.
@@ -27,7 +22,7 @@ public sealed partial class MutableString
     /// <param name="value">The value to find.</param>
     /// <param name="startIndex">The starting index of the search.</param>
     public int IndexOf(char value, int startIndex)
-        => IndexOf(value, startIndex, Count - startIndex, StringComparison.Ordinal);
+        => IndexOf(value, startIndex, InternalLength - startIndex, StringComparison.Ordinal);
 
     /// <summary>
     /// Returns the zero-based index of the first occurrence of the specified value.
@@ -44,7 +39,7 @@ public sealed partial class MutableString
     /// <param name="value">The value to find.</param>
     /// <param name="comparisonType">The type of comparison to perform.</param>
     public int IndexOf(char value, StringComparison comparisonType)
-        => IndexOf(value, 0, Count, comparisonType);
+        => IndexOf(value, 0, InternalLength, comparisonType);
 
     /// <summary>
     /// Returns the zero-based index of the first occurrence of the specified value.
@@ -53,7 +48,7 @@ public sealed partial class MutableString
     /// <param name="startIndex">The starting index of the search.</param>
     /// <param name="comparisonType">The type of comparison to perform.</param>
     public int IndexOf(char value, int startIndex, StringComparison comparisonType)
-        => IndexOf(value, startIndex, Count - startIndex, comparisonType);
+        => IndexOf(value, startIndex, InternalLength - startIndex, comparisonType);
 
     /// <summary>
     /// Returns the zero-based index of the first occurrence of the specified value.
@@ -75,7 +70,7 @@ public sealed partial class MutableString
     /// </summary>
     /// <param name="value">The value to find.</param>
     public int IndexOf(string? value)
-        => IndexOf(value, 0, Count, StringComparison.Ordinal);
+        => IndexOf(value, 0, InternalLength, StringComparison.Ordinal);
 
     /// <summary>
     /// Returns the zero-based index of the first occurrence of the specified value.
@@ -83,7 +78,7 @@ public sealed partial class MutableString
     /// <param name="value">The value to find.</param>
     /// <param name="startIndex">The starting index of the search.</param>
     public int IndexOf(string? value, int startIndex)
-        => IndexOf(value, startIndex, Count - startIndex, StringComparison.Ordinal);
+        => IndexOf(value, startIndex, InternalLength - startIndex, StringComparison.Ordinal);
 
     /// <summary>
     /// Returns the zero-based index of the first occurrence of the specified value.
@@ -100,7 +95,7 @@ public sealed partial class MutableString
     /// <param name="value">The value to find.</param>
     /// <param name="comparisonType">The type of comparison to perform.</param>
     public int IndexOf(string? value, StringComparison comparisonType)
-        => IndexOf(value, 0, Count, comparisonType);
+        => IndexOf(value, 0, InternalLength, comparisonType);
 
     /// <summary>
     /// Returns the zero-based index of the first occurrence of the specified value.
@@ -109,7 +104,7 @@ public sealed partial class MutableString
     /// <param name="startIndex">The starting index of the search.</param>
     /// <param name="comparisonType">The type of comparison to perform.</param>
     public int IndexOf(string? value, int startIndex, StringComparison comparisonType)
-        => IndexOf(value, startIndex, Count - startIndex, comparisonType);
+        => IndexOf(value, startIndex, InternalLength - startIndex, comparisonType);
 
     /// <summary>
     /// Returns the zero-based index of the first occurrence of the specified value.
@@ -131,7 +126,7 @@ public sealed partial class MutableString
     /// </summary>
     /// <param name="value">The value to find.</param>
     public int IndexOf(MutableString? value)
-        => IndexOf(value, 0, Count, StringComparison.Ordinal);
+        => IndexOf(value, 0, InternalLength, StringComparison.Ordinal);
 
     /// <summary>
     /// Returns the zero-based index of the first occurrence of the specified value.
@@ -139,7 +134,7 @@ public sealed partial class MutableString
     /// <param name="value">The value to find.</param>
     /// <param name="startIndex">The starting index of the search.</param>
     public int IndexOf(MutableString? value, int startIndex)
-        => IndexOf(value, startIndex, Count - startIndex, StringComparison.Ordinal);
+        => IndexOf(value, startIndex, InternalLength - startIndex, StringComparison.Ordinal);
 
     /// <summary>
     /// Returns the zero-based index of the first occurrence of the specified value.
@@ -156,7 +151,7 @@ public sealed partial class MutableString
     /// <param name="value">The value to find.</param>
     /// <param name="comparisonType">The type of comparison to perform.</param>
     public int IndexOf(MutableString? value, StringComparison comparisonType)
-        => IndexOf(value, 0, Count, comparisonType);
+        => IndexOf(value, 0, InternalLength, comparisonType);
 
     /// <summary>
     /// Returns the zero-based index of the first occurrence of the specified value.
@@ -165,7 +160,7 @@ public sealed partial class MutableString
     /// <param name="startIndex">The starting index of the search.</param>
     /// <param name="comparisonType">The type of comparison to perform.</param>
     public int IndexOf(MutableString? value, int startIndex, StringComparison comparisonType)
-        => IndexOf(value, startIndex, Count - startIndex, comparisonType);
+        => IndexOf(value, startIndex, InternalLength - startIndex, comparisonType);
 
     /// <summary>
     /// Returns the zero-based index of the first occurrence of the specified value.
@@ -187,19 +182,53 @@ public sealed partial class MutableString
     {
 #if NET8_0_OR_GREATER
         ArgumentOutOfRangeException.ThrowIfNegative(startIndex);
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(startIndex, Count);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(startIndex, InternalLength);
         ArgumentOutOfRangeException.ThrowIfNegative(count);
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(count, Count - startIndex);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(count, InternalLength - startIndex);
 #else
-        if (startIndex < 0 || startIndex > Count)
+        if (startIndex < 0 || startIndex > InternalLength)
             throw new ArgumentOutOfRangeException(nameof(startIndex));
-        if (count < 0 || count > Count - startIndex)
+        if (count < 0 || count > InternalLength - startIndex)
             throw new ArgumentOutOfRangeException(nameof(count));
 #endif
 
         int found = AsSpan().Slice(startIndex, count).IndexOf(value, comparisonType);
         return found < 0 ? -1 : found + startIndex;
     }
+
+    #endregion
+
+    #region IndexOfAny
+
+    /// <summary>
+    /// Returns the zero-based index of the first occurrence in this instance of any character in a specified array of Unicode
+    /// characters.
+    /// </summary>
+    /// <param name="anyOf">An array of Unicode characters to find.</param>
+    /// <returns>The zero-based index of the first occurrence of any character in this instance, or -1 if not found.</returns>
+    public int IndexOfAny(char[] anyOf)
+        => AsSpan().IndexOfAny(anyOf);
+
+    /// <summary>
+    /// Returns the zero-based index of the first occurrence in this instance of any character in a specified array of Unicode
+    /// characters, starting at a specified character position.
+    /// </summary>
+    /// <param name="anyOf">An array of Unicode characters to find.</param>
+    /// <param name="startIndex">The starting index of the search.</param>
+    /// <returns>The zero-based index of the first occurrence of any character in this instance, or -1 if not found.</returns>
+    public int IndexOfAny(char[] anyOf, int startIndex)
+        => AsSpan()[startIndex..].IndexOfAny(anyOf);
+
+    /// <summary>
+    /// Returns the zero-based index of the first occurrence in this instance of any character in a specified array of Unicode
+    /// characters, examining a specified number of characters.
+    /// </summary>
+    /// <param name="anyOf">An array of Unicode characters to find.</param>
+    /// <param name="startIndex">The starting index of the search.</param>
+    /// <param name="count">The number of characters to examine.</param>
+    /// <returns>The zero-based index of the first occurrence of any character in this instance, or -1 if not found.</returns>
+    public int IndexOfAny(char[] anyOf, int startIndex, int count)
+        => AsSpan().Slice(startIndex, count).IndexOfAny(anyOf);
 
     #endregion
 
@@ -212,7 +241,7 @@ public sealed partial class MutableString
     /// </summary>
     /// <param name="value">The value to find.</param>
     public int LastIndexOf(char value)
-        => LastIndexOf(value, Count == 0 ? 0 : Count - 1, Count, StringComparison.Ordinal);
+        => LastIndexOf(value, InternalLength == 0 ? 0 : InternalLength - 1, InternalLength, StringComparison.Ordinal);
 
     /// <summary>
     /// Returns the zero-based index of the last occurrence of the specified value, searching
@@ -239,7 +268,7 @@ public sealed partial class MutableString
     /// <param name="value">The value to find.</param>
     /// <param name="comparisonType">The type of comparison to perform.</param>
     public int LastIndexOf(char value, StringComparison comparisonType)
-        => LastIndexOf(value, Count == 0 ? 0 : Count - 1, Count, comparisonType);
+        => LastIndexOf(value, InternalLength == 0 ? 0 : InternalLength - 1, InternalLength, comparisonType);
 
     /// <summary>
     /// Returns the zero-based index of the last occurrence of the specified value, searching
@@ -272,7 +301,7 @@ public sealed partial class MutableString
     /// </summary>
     /// <param name="value">The value to find.</param>
     public int LastIndexOf(string? value)
-        => LastIndexOf(value, Count == 0 ? 0 : Count - 1, Count, StringComparison.Ordinal);
+        => LastIndexOf(value, InternalLength == 0 ? 0 : InternalLength - 1, InternalLength, StringComparison.Ordinal);
 
     /// <summary>
     /// Returns the zero-based index of the last occurrence of the specified value, searching
@@ -299,7 +328,7 @@ public sealed partial class MutableString
     /// <param name="value">The value to find.</param>
     /// <param name="comparisonType">The type of comparison to perform.</param>
     public int LastIndexOf(string? value, StringComparison comparisonType)
-        => LastIndexOf(value, Count == 0 ? 0 : Count - 1, Count, comparisonType);
+        => LastIndexOf(value, InternalLength == 0 ? 0 : InternalLength - 1, InternalLength, comparisonType);
 
     /// <summary>
     /// Returns the zero-based index of the last occurrence of the specified value, searching
@@ -332,7 +361,7 @@ public sealed partial class MutableString
     /// </summary>
     /// <param name="value">The value to find.</param>
     public int LastIndexOf(MutableString? value)
-        => LastIndexOf(value, Count == 0 ? 0 : Count - 1, Count, StringComparison.Ordinal);
+        => LastIndexOf(value, InternalLength == 0 ? 0 : InternalLength - 1, InternalLength, StringComparison.Ordinal);
 
     /// <summary>
     /// Returns the zero-based index of the last occurrence of the specified value, searching
@@ -359,7 +388,7 @@ public sealed partial class MutableString
     /// <param name="value">The value to find.</param>
     /// <param name="comparisonType">The type of comparison to perform.</param>
     public int LastIndexOf(MutableString? value, StringComparison comparisonType)
-        => LastIndexOf(value, Count == 0 ? 0 : Count - 1, Count, comparisonType);
+        => LastIndexOf(value, InternalLength == 0 ? 0 : InternalLength - 1, InternalLength, comparisonType);
 
     /// <summary>
     /// Returns the zero-based index of the last occurrence of the specified value, searching
@@ -390,7 +419,7 @@ public sealed partial class MutableString
     // Private implementation
     private int LastIndexOfCore(ReadOnlySpan<char> value, int startIndex, int count, StringComparison comparisonType)
     {
-        if (Count == 0)
+        if (InternalLength == 0)
         {
 #if NET8_0_OR_GREATER
             ArgumentOutOfRangeException.ThrowIfNotEqual(startIndex, 0);
@@ -404,7 +433,7 @@ public sealed partial class MutableString
             return -1;
         }
 
-        if (startIndex < 0 || startIndex >= Count)
+        if (startIndex < 0 || startIndex >= InternalLength)
             throw new ArgumentOutOfRangeException(nameof(startIndex));
 
 #if NET8_0_OR_GREATER
@@ -428,6 +457,40 @@ public sealed partial class MutableString
         int found = AsSpan().Slice(windowStart, count).LastIndexOf(value, comparisonType);
         return found < 0 ? -1 : found + windowStart;
     }
+
+    #endregion
+
+    #region LastIndexOfAny
+
+    /// <summary>
+    /// Returns the zero-based index of the last occurrence in this instance of any character in a specified array of Unicode
+    /// characters.
+    /// </summary>
+    /// <param name="anyOf">An array of Unicode characters to find.</param>
+    /// <returns>The zero-based index of the last occurrence of any character in this instance, or -1 if not found.</returns>
+    public int LastIndexOfAny(char[] anyOf)
+        => AsSpan().LastIndexOfAny(anyOf);
+
+    /// <summary>
+    /// Returns the zero-based index of the last occurrence in this instance of any character in a specified array of Unicode
+    /// characters, starting at a specified character position.
+    /// </summary>
+    /// <param name="anyOf">An array of Unicode characters to find.</param>
+    /// <param name="startIndex">The starting index of the search.</param>
+    /// <returns>The zero-based index of the last occurrence of any character in this instance, or -1 if not found.</returns>
+    public int LastIndexOfAny(char[] anyOf, int startIndex)
+        => AsSpan()[..(startIndex + 1)].LastIndexOfAny(anyOf);
+
+    /// <summary>
+    /// Returns the zero-based index of the last occurrence in this instance of any character in a specified array of Unicode
+    /// characters, examining a specified number of characters.
+    /// </summary>
+    /// <param name="anyOf">An array of Unicode characters to find.</param>
+    /// <param name="startIndex">The starting index of the search.</param>
+    /// <param name="count">The number of characters to examine.</param>
+    /// <returns>The zero-based index of the last occurrence of any character in this instance, or -1 if not found.</returns>
+    public int LastIndexOfAny(char[] anyOf, int startIndex, int count)
+        => AsSpan().Slice(startIndex - count + 1, count).LastIndexOfAny(anyOf);
 
     #endregion
 
@@ -487,7 +550,7 @@ public sealed partial class MutableString
     /// </summary>
     /// <param name="value">The string to compare to.</param>
     /// <returns><see langword="true" /> if <paramref name="value"/> matches the start, <see langword="false" /> otherwise.</returns>
-    public bool StartsWith(char value) => Count > 0 && Buffer[0] == value;
+    public bool StartsWith(char value) => InternalLength > 0 && Buffer[0] == value;
 
     /// <summary>
     /// Determines whether this <see cref="MutableString"/> starts with the specified string.
@@ -518,7 +581,7 @@ public sealed partial class MutableString
     /// </summary>
     /// <param name="value">The string to compare to.</param>
     /// <returns><see langword="true" /> if <paramref name="value"/> matches the end, <see langword="false" /> otherwise.</returns>
-    public bool EndsWith(char value) => Count > 0 && Buffer[Count - 1] == value;
+    public bool EndsWith(char value) => InternalLength > 0 && Buffer[InternalLength - 1] == value;
 
     /// <summary>
     /// Determines whether this <see cref="MutableString"/> ends with the specified string.

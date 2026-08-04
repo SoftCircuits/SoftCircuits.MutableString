@@ -23,12 +23,12 @@ public sealed partial class MutableString : ICloneable
     /// <see cref="EnumeratorVersion"/>, which the enumerator relies on to detect
     /// concurrent modification. Do not assign this field elsewhere.
     /// </remarks>
-    private int Count;
+    private int InternalLength;
 
     /// <summary>
     /// Converts this <see cref="MutableString"/> instance to a <see cref="string"/>.
     /// </summary>
-    public override string ToString() => new(Buffer, 0, Count);
+    public override string ToString() => new(Buffer, 0, InternalLength);
 
     /// <summary>
     /// Converts this <see cref="MutableString"/> instance to a <see cref="string"/>.
@@ -37,9 +37,9 @@ public sealed partial class MutableString : ICloneable
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public string ToString(int startIndex)
     {
-        if (startIndex < 0 || startIndex >= Count)
+        if (startIndex < 0 || startIndex >= InternalLength)
             throw new ArgumentOutOfRangeException(nameof(startIndex));
-        return new string(Buffer, startIndex, Count - startIndex);
+        return new string(Buffer, startIndex, InternalLength - startIndex);
     }
 
     /// <summary>
@@ -50,9 +50,9 @@ public sealed partial class MutableString : ICloneable
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public string ToString(int startIndex, int length)
     {
-        if (startIndex < 0 || startIndex >= Count)
+        if (startIndex < 0 || startIndex >= InternalLength)
             throw new ArgumentOutOfRangeException(nameof(startIndex));
-        if (length < 0 || startIndex + length > Count)
+        if (length < 0 || startIndex + length > InternalLength)
             throw new ArgumentOutOfRangeException(nameof(length));
         return new string(Buffer, startIndex, length);
     }
@@ -61,7 +61,35 @@ public sealed partial class MutableString : ICloneable
     /// Creates a new <see cref="ReadOnlySpan{T}"/> from this <see cref="MutableString"/>
     /// instance. The span is only valid until the next modification of this instance.
     /// </summary>
-    public ReadOnlySpan<char> AsSpan() => new(Buffer, 0, Count);
+    public ReadOnlySpan<char> AsSpan() => new(Buffer, 0, InternalLength);
+
+    /// <summary>
+    /// Copies the contents of this <see cref="MutableString"/> to the specified
+    /// span.
+    /// </summary>
+    /// <param name="destination">The span to copy characters into.</param>
+    public void CopyTo(Span<char> destination)
+    {
+        AsSpan().CopyTo(destination);
+    }
+
+    /// <summary>
+    /// Copies the contents of this <see cref="MutableString"/> to the specified
+    /// array.
+    /// </summary>
+    /// <param name="destination">The span to copy characters into.</param>
+    /// <param name="index">The target index to copy characters.</param>
+    /// <param name="count">The number of characters to copy.</param>
+    public void CopyTo(char[] destination, int index, int count)
+    {
+#if NET8_0_OR_GREATER
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(count, InternalLength);
+#else
+        if (count > InternalLength)
+            throw new ArgumentOutOfRangeException(nameof(count));
+#endif
+        Array.Copy(Buffer, 0, destination, index, count);
+    }
 
     #region ICloneable
 
@@ -89,7 +117,7 @@ public sealed partial class MutableString : ICloneable
             // To minimize the number of reallocations, double requested size
             Array.Resize(ref Buffer, Math.Max(length * 2, 32));
         }
-        Count = length;
+        InternalLength = length;
         EnumeratorVersion++;
     }
 

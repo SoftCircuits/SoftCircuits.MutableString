@@ -38,7 +38,7 @@ public sealed partial class MutableString
     public void Replace(int index, MutableString? value)
     {
         if (value != null)
-            Replace(index, value.Buffer.AsSpan(0, value.Count), value.Length);
+            Replace(index, value.Buffer.AsSpan(0, value.InternalLength), value.Length);
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public sealed partial class MutableString
         }
         else
         {
-            Replace(index, value.Buffer.AsSpan(0, value.Count), replaceCount);
+            Replace(index, value.Buffer.AsSpan(0, value.InternalLength), replaceCount);
         }
     }
 
@@ -97,7 +97,7 @@ public sealed partial class MutableString
         }
 
         // Ensure valid index
-        int oldLength = Count;
+        int oldLength = InternalLength;
         if (index > oldLength)
             index = oldLength;
 
@@ -138,8 +138,7 @@ public sealed partial class MutableString
         Copy(span, index);
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    // String Replacement methods
+    #region String Replacement
 
     /// <summary>
     /// Replaces all occurrences of <paramref name="oldChar"/> with <paramref name="newChar"/>.
@@ -148,7 +147,7 @@ public sealed partial class MutableString
     /// <param name="newChar">The new character.</param>
     public void Replace(char oldChar, char newChar)
     {
-        for (int i = 0; i < Count; i++)
+        for (int i = 0; i < InternalLength; i++)
         {
             if (Buffer[i] == oldChar)
                 Buffer[i] = newChar;
@@ -182,4 +181,7 @@ public sealed partial class MutableString
             i += newValue.Length;
         }
     }
+
+    #endregion
+
 }

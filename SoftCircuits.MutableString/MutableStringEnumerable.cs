@@ -17,7 +17,7 @@ public sealed partial class MutableString : IEnumerable<char>
     {
         int version = EnumeratorVersion;
 
-        for (int i = 0; i < Count; i++)
+        for (int i = 0; i < InternalLength; i++)
         {
             // Check guard for changes to MutableString during enumeration
             if (version != EnumeratorVersion)

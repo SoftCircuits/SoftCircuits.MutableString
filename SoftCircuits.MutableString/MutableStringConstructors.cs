@@ -27,7 +27,7 @@ public partial class MutableString
 #endif
 
         Resize(capacity);
-        Count = 0;
+        InternalLength = 0;
     }
 
     /// <summary>

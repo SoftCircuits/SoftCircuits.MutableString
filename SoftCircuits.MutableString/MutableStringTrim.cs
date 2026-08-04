@@ -11,7 +11,7 @@ public sealed partial class MutableString
     public void TrimStart()
     {
         int i = 0;
-        while (i < Count && char.IsWhiteSpace(Buffer[i]))
+        while (i < InternalLength && char.IsWhiteSpace(Buffer[i]))
             i++;
 
         if (i > 0)
@@ -23,12 +23,12 @@ public sealed partial class MutableString
     /// </summary>
     public void TrimEnd()
     {
-        int i = Count;
+        int i = InternalLength;
         while (i > 0 && char.IsWhiteSpace(Buffer[i - 1]))
             i--;
 
-        if (i < Count)
-            Remove(i, Count - i);
+        if (i < InternalLength)
+            Remove(i, InternalLength - i);
     }
 
     /// <summary>

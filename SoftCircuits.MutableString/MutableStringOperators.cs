@@ -72,6 +72,21 @@ public sealed partial class MutableString
     #region Comparison
 
     /// <summary>
+    /// Implements <c>==</c> operator for two <see cref="MutableString"/>s.
+    /// </summary>
+    public static bool operator ==(MutableString? left, MutableString? right)
+    {
+        return (left is null) ?
+            right is null :
+            left.Equals(right);
+    }
+
+    /// <summary>
+    /// Implements <c>!=</c> operator for two <see cref="MutableString"/>s.
+    /// </summary>
+    public static bool operator !=(MutableString? left, MutableString? right) => !(left == right);
+
+    /// <summary>
     /// Implements <c>&lt;</c> operator for two <see cref="MutableString"/>s.
     /// </summary>
     public static bool operator <(MutableString? left, MutableString? right)

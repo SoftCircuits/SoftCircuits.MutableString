@@ -18,7 +18,7 @@ public sealed partial class MutableString
     public void Append(MutableString? value)
     {
         if (value != null)
-            Append(value.Buffer.AsSpan(0, value.Count));
+            Append(value.Buffer.AsSpan(0, value.InternalLength));
     }
 
     /// <summary>
@@ -37,7 +37,7 @@ public sealed partial class MutableString
             return;
 
         // Resize array
-        int oldLength = Count;
+        int oldLength = InternalLength;
         Resize(oldLength + span.Length);
 
         // Copy string

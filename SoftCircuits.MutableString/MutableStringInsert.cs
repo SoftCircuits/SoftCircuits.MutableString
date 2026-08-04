@@ -20,7 +20,7 @@ public sealed partial class MutableString
     public void Insert(int index, MutableString? value)
     {
         if (value != null)
-            Insert(index, value.Buffer.AsSpan(0, value.Count));
+            Insert(index, value.Buffer.AsSpan(0, value.InternalLength));
     }
 
     /// <summary>
@@ -41,7 +41,7 @@ public sealed partial class MutableString
             return;
 
         // Ensure valid index
-        int oldLength = Count;
+        int oldLength = InternalLength;
         if (index > oldLength)
             index = oldLength;
 
@@ -69,7 +69,7 @@ public sealed partial class MutableString
             return;
 
         // Ensure valid index
-        int oldLength = Count;
+        int oldLength = InternalLength;
         if (index > oldLength)
             index = oldLength;
 

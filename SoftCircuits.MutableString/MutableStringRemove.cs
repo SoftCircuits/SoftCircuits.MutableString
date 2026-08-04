@@ -12,7 +12,7 @@ public sealed partial class MutableString
     /// <param name="count">The number of characters to delete.</param>
     public void Remove(int index, int count)
     {
-        int oldLength = Count;
+        int oldLength = InternalLength;
         if (index < 0 || index >= oldLength || count <= 0)
             return;
 
@@ -33,5 +33,5 @@ public sealed partial class MutableString
     /// of the string.
     /// </summary>
     /// <param name="index">The starting index where characters should be deleted.</param>
-    public void Remove(int index) => Remove(index, Count - index);
+    public void Remove(int index) => Remove(index, InternalLength - index);
 }

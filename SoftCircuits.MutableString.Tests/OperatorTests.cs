@@ -163,6 +163,39 @@ public class OperatorTests
         Assert.False(ReferenceEquals(a, original));  // 'a' now points at a new instance
     }
 
+    // --- equality operators (==, !=) ---
+
+    [Fact]
+    public void EqualOperator_Compare()
+    {
+        MutableString a = new("apple");
+        MutableString b = new("banana");
+        Assert.False(a == b);
+        Assert.True(a != b);
+    }
+
+    [Fact]
+    public void EqualOperator_CompareNull()
+    {
+        MutableString a = new("apple");
+        MutableString? b = null;
+        Assert.False(a == b);
+        Assert.True(a != b);
+        Assert.False(a == b);
+        Assert.True(a != b);
+    }
+
+    [Fact]
+    public void EqualOperator_CompareBothNull()
+    {
+        MutableString? a = null;
+        MutableString? b = null;
+        Assert.True(a == b);
+        Assert.False(a != b);
+        Assert.True(a == b);
+        Assert.False(a != b);
+    }
+
     // --- operator < ---
 
     [Fact]

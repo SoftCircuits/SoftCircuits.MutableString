@@ -26,7 +26,7 @@ public sealed partial class MutableString
     public void Copy(MutableString? value, int targetIndex)
     {
         if (value != null)
-            Copy(value.Buffer.AsSpan(0, value.Count), targetIndex);
+            Copy(value.Buffer.AsSpan(0, value.InternalLength), targetIndex);
     }
 
     /// <summary>
@@ -48,13 +48,13 @@ public sealed partial class MutableString
     public void Copy(ReadOnlySpan<char> span, int targetIndex)
     {
         int count = span.Length;
-        if (count > Count - targetIndex)
-            count = Count - targetIndex;
+        if (count > InternalLength - targetIndex)
+            count = InternalLength - targetIndex;
 
         if (count <= 0)
             return;
 
-        Debug.Assert(targetIndex + count <= Count);
+        Debug.Assert(targetIndex + count <= InternalLength);
 
         // Copy characters
         span[..count].CopyTo(Buffer.AsSpan(targetIndex, count));
@@ -68,7 +68,7 @@ public sealed partial class MutableString
     /// <param name="count">The number of characters to copy.</param>
     public void Copy(int sourceIndex, int targetIndex, int count)
     {
-        int maxCount = Count - Math.Max(sourceIndex, targetIndex);
+        int maxCount = InternalLength - Math.Max(sourceIndex, targetIndex);
         if (count > maxCount)
             count = maxCount;
 

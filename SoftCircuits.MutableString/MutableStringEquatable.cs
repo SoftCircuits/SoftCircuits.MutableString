@@ -14,7 +14,7 @@ public sealed partial class MutableString : IEquatable<MutableString?>, IEquatab
     {
         if (other == null)
             return false;
-        if (other.Length != Count)
+        if (other.Length != InternalLength)
             return false;
         return other.AsSpan().Equals(AsSpan(), StringComparison.Ordinal);
     }
@@ -28,7 +28,7 @@ public sealed partial class MutableString : IEquatable<MutableString?>, IEquatab
     {
         if (other == null)
             return false;
-        if (other.Length != Count)
+        if (other.Length != InternalLength)
             return false;
         return other.AsSpan().Equals(AsSpan(), StringComparison.Ordinal);
     }

@@ -266,4 +266,50 @@ public class LastIndexOfTests
         MutableString ms = new("abcabc");
         Assert.Equal(3, ms.LastIndexOf(new MutableString("abc")));
     }
+
+    // --- LastIndexOfAny tests ---
+
+    [Fact]
+    public void LastIndexOfAny_NotFound_ReturnsNegativeOne()
+    {
+        MutableString ms = new("abcdef");
+        Assert.Equal(-1, ms.LastIndexOfAny(['x', 'y', 'z']));
+    }
+
+    [Fact]
+    public void LastIndexOfAny_FindFirstCharacter()
+    {
+        MutableString ms = new("abcdef");
+        Assert.Equal(0, ms.LastIndexOfAny(['a', 'x', 'y', 'z']));
+    }
+
+    [Fact]
+    public void LastIndexOfAny_FindMiddleCharacter()
+    {
+        MutableString ms = new("abcdef");
+        Assert.Equal(2, ms.LastIndexOfAny(['c', 'x', 'y', 'z']));
+    }
+
+    [Fact]
+    public void LastIndexOfAny_FindLastCharacter()
+    {
+        MutableString ms = new("abcdef");
+        Assert.Equal(5, ms.LastIndexOfAny(['f', 'x', 'y', 'z']));
+    }
+
+    [Fact]
+    public void LastIndexOfAny_UseSpecifiedCount()
+    {
+        MutableString ms = new("zaaaaa");
+        Assert.Equal(-1, ms.LastIndexOfAny(['x', 'y', 'z'], 5, 5));
+    }
+
+    [Fact]
+    public void LastIndexOfAny_UsesLogicalLength()
+    {
+        MutableString ms = new("aaaaaz");
+        Assert.Equal(5, ms.LastIndexOfAny(['x', 'y', 'z']));
+        ms.Length = 5;
+        Assert.Equal(-1, ms.LastIndexOfAny(['x', 'y', 'z']));
+    }
 }
