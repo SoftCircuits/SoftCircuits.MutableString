@@ -6,31 +6,6 @@ namespace SoftCircuits.MutableString;
 public sealed partial class MutableString
 {
     /// <summary>
-    /// Inserts the specified string at the specified index.
-    /// </summary>
-    /// <param name="index">The index where the string should be inserted.</param>
-    /// <param name="s">The string to insert.</param>
-    public void Insert(int index, string? s) => Insert(index, s.AsSpan());
-
-    /// <summary>
-    /// Inserts the specified <see cref="MutableString"/> at the specified index.
-    /// </summary>
-    /// <param name="index">The index where the string should be inserted.</param>
-    /// <param name="value">The string to insert.</param>
-    public void Insert(int index, MutableString? value)
-    {
-        if (value != null)
-            Insert(index, value.Buffer.AsSpan(0, value.InternalLength));
-    }
-
-    /// <summary>
-    /// Inserts the specified char array at the specified index.
-    /// </summary>
-    /// <param name="index">The index where the string should be inserted.</param>
-    /// <param name="array">The char array to insert.</param>
-    public void Insert(int index, char[]? array) => Insert(index, array.AsSpan());
-
-    /// <summary>
     /// Inserts the specified <see cref="ReadOnlySpan{T}"/> at the specified index.
     /// </summary>
     /// <param name="index">The index where the string should be inserted.</param>
@@ -84,4 +59,29 @@ public sealed partial class MutableString
         for (int i = 0; i < count; i++)
             Buffer[index + i] = c;
     }
+
+    /// <summary>
+    /// Inserts the specified string at the specified index.
+    /// </summary>
+    /// <param name="index">The index where the string should be inserted.</param>
+    /// <param name="s">The string to insert.</param>
+    public void Insert(int index, string? s) => Insert(index, s.AsSpan());
+
+    /// <summary>
+    /// Inserts the specified <see cref="MutableString"/> at the specified index.
+    /// </summary>
+    /// <param name="index">The index where the string should be inserted.</param>
+    /// <param name="value">The string to insert.</param>
+    public void Insert(int index, MutableString? value)
+    {
+        if (value != null)
+            Insert(index, value.AsSpan());
+    }
+
+    /// <summary>
+    /// Inserts the specified char array at the specified index.
+    /// </summary>
+    /// <param name="index">The index where the string should be inserted.</param>
+    /// <param name="array">The char array to insert.</param>
+    public void Insert(int index, char[]? array) => Insert(index, array.AsSpan());
 }

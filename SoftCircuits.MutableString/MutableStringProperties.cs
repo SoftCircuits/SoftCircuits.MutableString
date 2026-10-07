@@ -12,7 +12,7 @@ public sealed partial class MutableString
     public int Length
     {
         get => InternalLength;
-        set => Resize(value);
+        set => Resize(value);   // Avoid setting InternalLength directly
     }
 
     /// <summary>
@@ -22,7 +22,7 @@ public sealed partial class MutableString
 
     /// <summary>
     /// Gets a value indicating whether this <see cref="MutableString"/> object consists only of whitespace characters.
-    /// Returns true also if the string is empty.
+    /// Returns true if the string is empty.
     /// </summary>
     public bool IsWhiteSpace
     {

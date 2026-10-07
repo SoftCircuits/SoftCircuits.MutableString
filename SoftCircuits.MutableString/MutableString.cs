@@ -39,6 +39,7 @@ public sealed partial class MutableString : ICloneable
     {
         if (startIndex < 0 || startIndex >= InternalLength)
             throw new ArgumentOutOfRangeException(nameof(startIndex));
+
         return new string(Buffer, startIndex, InternalLength - startIndex);
     }
 
@@ -54,6 +55,7 @@ public sealed partial class MutableString : ICloneable
             throw new ArgumentOutOfRangeException(nameof(startIndex));
         if (length < 0 || startIndex + length > InternalLength)
             throw new ArgumentOutOfRangeException(nameof(length));
+
         return new string(Buffer, startIndex, length);
     }
 
@@ -62,6 +64,37 @@ public sealed partial class MutableString : ICloneable
     /// instance. The span is only valid until the next modification of this instance.
     /// </summary>
     public ReadOnlySpan<char> AsSpan() => new(Buffer, 0, InternalLength);
+
+    /// <summary>
+    /// Creates a new <see cref="ReadOnlySpan{T}"/> from this <see cref="MutableString"/>
+    /// instance. The span is only valid until the next modification of this instance.
+    /// </summary>
+    /// <param name="startIndex">The zero-based index of the first character to include in the span.</param>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public ReadOnlySpan<char> AsSpan(int startIndex)
+    {
+        if (startIndex < 0 || startIndex > InternalLength)
+            throw new ArgumentOutOfRangeException(nameof(startIndex));
+
+        return new(Buffer, startIndex, InternalLength - startIndex);
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="ReadOnlySpan{T}"/> from this <see cref="MutableString"/>
+    /// instance. The span is only valid until the next modification of this instance.
+    /// </summary>
+    /// <param name="startIndex">The zero-based index of the first character to include in the span.</param>
+    /// <param name="length">The number of characters to include in the span.</param>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public ReadOnlySpan<char> AsSpan(int startIndex, int length)
+    {
+        if (startIndex < 0 || startIndex > InternalLength)
+            throw new ArgumentOutOfRangeException(nameof(startIndex));
+        if (length < 0 || startIndex + length > InternalLength)
+            throw new ArgumentOutOfRangeException(nameof(length));
+
+        return new(Buffer, startIndex, length);
+    }
 
     /// <summary>
     /// Copies the contents of this <see cref="MutableString"/> to the specified
@@ -106,6 +139,12 @@ public sealed partial class MutableString : ICloneable
     /// Resizes this <see cref="MutableString"/> object.
     /// </summary>
     /// <param name="length">Specifies the new string length.</param>
+    /// <remarks>
+    /// In general, code should avoid modifying <see cref="InternalLength"/>
+    /// directly, since <see cref="EnumeratorVersion"/> needs to be updated
+    /// as well. Call this method instead. This method never makes
+    /// the string shorter. It only grows it, if needed.
+    /// </remarks>
     [MemberNotNull(nameof(Buffer))]
     private void Resize(int length)
     {

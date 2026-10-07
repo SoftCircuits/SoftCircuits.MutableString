@@ -22,3 +22,6 @@ s.Replace(5, "test");           // this test!
 s[0] = 'T';                     // This test!
 s.Insert(4, " is a");           // This is a test!
 ```
+
+Many other string manipulation methods are included, including a number of
+overloaded operators.

@@ -27,7 +27,7 @@ public partial class MutableString
 #endif
 
         Resize(capacity);
-        InternalLength = 0;
+        Resize(0);  // Avoid setting InternalLength directly
     }
 
     /// <summary>
